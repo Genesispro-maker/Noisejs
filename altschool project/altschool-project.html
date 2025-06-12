@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+             body{
+                 background-color: white
+             }
+
+
+
+             .cover{
+                background-color: black;
+                width: 400px;
+                margin-left: 50px;
+                 height: 600px;
+             }
+
+        .btns{
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                gap: 20px;
+                margin-left: 10px;
+                margin-bottom: 5px;
+            
+        }
+
+        button{
+            width: 50px;
+            height: 50px;
+            margin-top: 30px;
+            border-radius: 20px; 
+        }
+
+        input{
+            width: 200px;
+            height: 50px;
+             font-size: 2rem;
+             font-style: italic;
+            margin-left: 80px;
+             border-radius: 20px;
+             margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cover">
+        <input type="text" name="display" id="display">
+        <div class="btns">
+       <button onclick="append(9)">9</button>
+       <button onclick="append(8)">8</button>
+       <button onclick="append(7)">7</button>
+       <button onclick="append(6)">6</button>
+       <button onclick="append(5)">5</button>
+       <button onclick="append(4)">4</button>
+       <button onclick="append(3)">3</button>
+       <button onclick="append(2)">2</button>
+       <button onclick="append(1)">1</button>
+       <button onclick="append(0)">0</button>
+       <button onclick="append('+')">+</button>
+       <button onclick="append('-')">-</button>
+       <button onclick="append('/')">/</button>
+       <button onclick="append('*')">*</button>
+       <button onclick="append('.')">.</button>
+       <button onclick="calculate()">=</button>
+       <button onclick="clearr()">clear</button>
+       <button onclick="deletelast()">delete</button>
+       </div>
+    </div>
+
+
+
+    <script>
+            const dis = document.getElementById('display');
+
+
+            function append(value){
+                   dis.value += value; 
+            }
+
+            function clearr(){
+                dis.value ="";
+            }
+
+            function calculate(){
+                dis.value = eval(dis.value)
+            }
+
+
+            function deletelast(){
+                dis.value = dis.value.slice(0, -1);
+            }
+
+    </script>
+</body>
+</html>
