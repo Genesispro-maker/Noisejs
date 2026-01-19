@@ -1,4 +1,4 @@
-class AudioClass {
+export default class Noises {
     #audio
     #context
     #gainNode
