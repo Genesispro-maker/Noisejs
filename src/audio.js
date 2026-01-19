@@ -1,5 +1,3 @@
-
-
 class AudioClass {
     #audio
     #context
