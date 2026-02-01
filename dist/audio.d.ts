@@ -10,7 +10,7 @@ export default class Noise {
     private panner;
     private Source;
     private loop;
-    private audio;
+    audio: HTMLAudioElement;
     duration: string | undefined | void;
     currentTime: string | undefined;
     constructor({ src, volume, pan, loop }: Partial<NoiseType>);
