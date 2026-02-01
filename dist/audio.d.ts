@@ -11,7 +11,7 @@ export default class Noise {
     private Source;
     private loop;
     private audio;
-    duration: string;
+    duration: string | undefined | void;
     currentTime: string | undefined;
     constructor({ src, volume, pan, loop }: Partial<NoiseType>);
     play(): Promise<void>;
