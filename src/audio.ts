@@ -61,10 +61,11 @@ const noise = new Noise({
 })
 
 const play = document.querySelector(".play") as HTMLElement
-const h1 = document.createElement("h1")
-h1.textContent = `${noise.duration}`
 
 play.addEventListener("click", () => {
   noise.play()
   console.log(noise.duration)
+  const h1 = document.createElement("h1")
+h1.textContent = `${noise.duration}`
+document.body.append(h1)
 })
