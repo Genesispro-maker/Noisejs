@@ -1,6 +1,6 @@
 function formatTime(time) {
     if (isNaN(time))
-        return "0.00";
+        return;
     const abs = Math.abs(time);
     const min = Math.floor(abs / 60);
     const sec = Math.floor(abs % 60);
@@ -19,16 +19,15 @@ export default class Noise {
         this.audioContext = new AudioContext();
         this.audio = new Audio(src);
         this.loop = this.audio.loop = loop;
-        this.duration = formatTime(this.audio.duration);
+        this.duration = this.audio.addEventListener("loadedmetadata", () => {
+            return this.duration = formatTime(this.audio.duration);
+        });
         this.currentTime = formatTime(this.audio.currentTime);
         this.Source = this.audioContext.createMediaElementSource(this.audio);
         this.gainNode = this.audioContext.createGain();
         this.panner = new StereoPannerNode(this.audioContext);
         this.gainNode.gain.value = volume;
         this.panner.pan.value = pan;
-        this.audio.addEventListener("loadedmetadata", () => {
-            return this.duration = formatTime(this.audio.duration);
-        });
         this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination);
     }
     async play() {
@@ -45,8 +44,8 @@ const noise = new Noise({
 const play = document.querySelector(".play");
 const h1 = document.createElement("h1");
 h1.textContent = `${noise.duration}`;
-document.body.appendChild(h1);
 play.addEventListener("click", () => {
     noise.play();
+    console.log(noise.duration);
 });
 //# sourceMappingURL=audio.js.map
