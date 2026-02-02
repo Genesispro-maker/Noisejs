@@ -13,15 +13,11 @@ export default class Noise {
     Source;
     loop;
     audio;
-    duration;
     currentTime;
     constructor({ src, volume = 1, pan = 0, loop = false }) {
         this.audioContext = new AudioContext();
         this.audio = new Audio(src);
         this.loop = this.audio.loop = loop;
-        this.duration = this.audio.addEventListener("loadedmetadata", () => {
-            return this.duration = formatTime(this.audio.duration);
-        });
         this.currentTime = formatTime(this.audio.currentTime);
         this.Source = this.audioContext.createMediaElementSource(this.audio);
         this.gainNode = this.audioContext.createGain();
@@ -42,8 +38,5 @@ const noise = new Noise({
     src: "/plenty.mp3",
 });
 noise.play();
-noise.audio.addEventListener("loadedmetadata", () => {
-    console.log(noise.duration);
-});
 const play = document.querySelector(".play");
 //# sourceMappingURL=audio.js.map
