@@ -21,8 +21,8 @@ export default class Noise {
     private metaData;
     constructor({ src, mute, volume, pan, loop }: Partial<NoiseType>);
     private init;
-    onLoadedmetadata(callback: (metadata: Metadata) => void): number | this;
     private notifyEventListners;
+    onLoadedmetadata(callback: (metadata: Metadata) => void): number | this;
     play(): Promise<void>;
     pause(): void;
 }

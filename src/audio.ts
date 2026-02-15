@@ -76,17 +76,19 @@ export default class Noise{
         })
     }
 
+
+    private notifyEventListners(metadata: Metadata): void{
+        this.metaData.forEach((listner) => {
+           listner(metadata)
+        })
+    }
+
+
     onLoadedmetadata(callback: (metadata: Metadata) => void): number | this{
         if(typeof callback === "function"){
             return this.metaData.push(callback)
         }
         return this
-    }
-
-   private notifyEventListners(metadata: Metadata): void{
-        this.metaData.forEach((listner) => {
-           listner(metadata)
-        })
     }
 
 
@@ -119,3 +121,4 @@ const play = document.querySelector(".play") as HTMLElement;
 play.addEventListener("click", () => {
     noise.play()
 })
+

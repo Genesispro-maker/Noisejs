@@ -39,16 +39,16 @@ export default class Noise {
             this.notifyEventListners(metadatas);
         });
     }
+    notifyEventListners(metadata) {
+        this.metaData.forEach((listner) => {
+            listner(metadata);
+        });
+    }
     onLoadedmetadata(callback) {
         if (typeof callback === "function") {
             return this.metaData.push(callback);
         }
         return this;
-    }
-    notifyEventListners(metadata) {
-        this.metaData.forEach((listner) => {
-            listner(metadata);
-        });
     }
     async play() {
         await this.audioContext.resume();
@@ -72,4 +72,8 @@ const play = document.querySelector(".play");
 play.addEventListener("click", () => {
     noise.play();
 });
+const number = [43, 5, 6, 29].findIndex(nums => {
+    return nums === 29;
+});
+console.log(number);
 //# sourceMappingURL=audio.js.map
