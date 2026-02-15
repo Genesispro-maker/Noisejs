@@ -8,6 +8,7 @@ function formatTime(time) {
 
 export default class Noise{
     constructor({src, volume = 1, pan = 0, loop = false}){
+          this.metaData = []
           this.audioContext = new AudioContext()
           this.audio = new Audio(src)
           this.audio.preload = 'metadata'
@@ -16,10 +17,40 @@ export default class Noise{
           this.gainNode = this.audioContext.createGain()
           this.panner = new StereoPannerNode(this.audioContext)
           this.gainNode.gain.value = volume
-          this.panner.pan.value = pan        
+          this.panner.pan.value = pan     
+          this.initialize()   
 
           this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination)
     }
+
+    initialize(){
+        this.audio.addEventListener("loadedmetadata", () => {
+            const audioFileData = {
+                duration: formatTime(this.audio.duration),
+                title: this.audio.src.split("/").pop(),
+                fileext: this.audio.src.split(".").pop(),
+            }
+
+
+            this.notifyListners(audioFileData)
+        })
+    }
+
+
+    onLoadedmetadata(callback){
+        if(typeof callback === "function"){
+            this.metaData.push(callback)
+        }
+
+        return this
+    }
+
+    notifyListners(metadata){
+        this.metaData.forEach(listener => {
+            listener(metadata)
+        })
+    }
+
 
     get currentTime(){
        return formatTime(this.audio.currentTime)
@@ -52,17 +83,8 @@ playbtn.addEventListener("click", () => {
    noise.play()
 })
 
-
-//   this.audioContext = new AudioContext()
-//         this.audio = new Audio(src)
-//         this.loop = this.audio.loop = loop
-//         this.currentTime = formatTime(this.audio.currentTime)
-//         this.Source = this.audioContext.createMediaElementSource(this.audio)
-//         this.gainNode = this.audioContext.createGain()
-//         this.panner = new StereoPannerNode(this.audioContext)
-//         this.gainNode.gain.value =  volume
-//         this.panner.pan.value = pan
-
-        
-//         this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination)
-    
+noise.onLoadedmetadata((metaData) => {
+    console.log(metaData.duration)
+    console.log(metaData.title)
+    console.log(metaData.fileext)
+})
