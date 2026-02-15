@@ -22,12 +22,15 @@ Noise Js is not currently available on npm.
 
 Clone the repository:
 
+````````
 git clone https://github.com/yourusername/noise-js.git
+````````
 
 Then include it in your project:
 
 Using a <script> tag
-`````
+
+`````js
 <script src="path/to/noise.js"></script>
 `````
 
@@ -51,42 +54,58 @@ noise.play()
 
 # ⚙️ Constructor Options
 Property	Type	Default	Description
+
 src	string	required	Path to the audio file
+
 mute	boolean	false	Mutes the audio
+
 volume	number	1	Volume level (0 to 1)
+
 pan	number	0	Stereo pan (-1 left to 1 right)
+
 loop	boolean	false	Whether the audio should loop
-🎛 Methods
+
+# 🎛 Methods
+
 play()
 
 Plays the audio.
-
+````js
 noise.play()
+`````
+
 pause()
 
 Pauses the audio.
-
+````js
 noise.pause()
+`````
+````js
 onLoadedmetadata(callback)
+`````
 
 Fires when the audio metadata has finished loading.
-
+`````js
 noise.onLoadedmetadata(() => {
   console.log("Metadata loaded")
 })
+`````
 
 # 🛠 Example
+``````js
 const bgMusic = new Noise({
   src: "background.mp3",
   volume: 0.5,
   loop: true
 })
-
+``````
+````js
 bgMusic.onLoadedmetadata(() => {
   console.log("Audio ready")
 })
 
 bgMusic.play()
+````
 
 # 🔮 Future Updates
  npm release
