@@ -90,6 +90,9 @@ const noise = new Noise({
 
 noise.onLoadedmetadata((metadata) => {
     console.log(metadata.duration)
+    console.log(metadata.currentTime)
+    console.log(metadata.fileExt)
+    console.log(metadata.title)
 })
 
 
