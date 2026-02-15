@@ -97,3 +97,6 @@ noise.onLoadedmetadata((metadata) => {
 
 
 const play = document.querySelector(".play") as HTMLElement
+play.addEventListener("click", () => {
+    noise.play()
+})
