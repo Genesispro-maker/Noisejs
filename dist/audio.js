@@ -58,18 +58,4 @@ export default class Noise {
         this.audio.pause();
     }
 }
-const noise = new Noise({
-    src: "/plenty_By_Burna_boy.mp3",
-    loop: true,
-    mute: false,
-});
-noise.onLoadedmetadata((data) => {
-    console.log(data.duration);
-    console.log(data.currentTime);
-    console.log(data.title);
-});
-const play = document.querySelector(".play");
-play.addEventListener("click", () => {
-    noise.play();
-});
 //# sourceMappingURL=audio.js.map
