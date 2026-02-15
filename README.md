@@ -55,15 +55,15 @@ noise.play()
 # ⚙️ Constructor Options
 Property	Type	Default	Description
 
-`src`:	 string	required	Path to the audio file
+`src`:	 string	required Path to the audio file
 
-`mute`: 	 boolean	false	Mutes the audio
+`mute`:  boolean false	Mutes the audio
 
-`volume`:	 number	1	Volume level (0 to 1)
+`volume`: number	1	Volume level (0 to 1)
 
-`pan`: 	number	0	Stereo pan (-1 left to 1 right)
+`pan`: number 0	Stereo pan (-1 left to 1 right)
 
-`loop`:  boolean	false	Whether the audio should loop
+`loop`: boolean false	Whether the audio should loop
 
 # 🎛 Methods
 
