@@ -27,7 +27,9 @@ git clone https://github.com/yourusername/noise-js.git
 Then include it in your project:
 
 Using a <script> tag
+`````
 <script src="path/to/noise.js"></script>
+`````
 
 Using ES Modules
 
@@ -35,14 +37,17 @@ import Noise from "./noise.js"
 
 
 # 🚀 Usage
+
 Creating an instance
+
+```js
 const noise = new Noise({
   src: "audio.mp3",
-  mute: false,
-  volume: 1,
-  pan: 0,
-  loop: false
+  volume: 0.5
 })
+
+noise.play()
+```
 
 # ⚙️ Constructor Options
 Property	Type	Default	Description
