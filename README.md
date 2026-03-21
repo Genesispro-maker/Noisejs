@@ -86,8 +86,9 @@ onLoadedmetadata(callback)
 
 Fires when the audio metadata has finished loading.
 `````js
-noise.onLoadedmetadata(() => {
+noise.onLoadedmetadata((data) => {
   console.log("Metadata loaded")
+  console.log("name", data.name)
 })
 `````
 
