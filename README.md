@@ -108,8 +108,6 @@ bgMusic.play()
 ````
 
 # 🔮 Future Updates
-. npm release
- 
 . Publish to npm
 
 . Expand audio control features
