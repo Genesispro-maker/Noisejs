@@ -23,7 +23,7 @@ Noise Js is not currently available on npm.
 Clone the repository:
 
 ````````
-git clone https://github.com/yourusername/noise-js.git
+https://github.com/Genesispro-maker/Noisejs.git
 ````````
 
 Then include it in your project:
