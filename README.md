@@ -101,8 +101,10 @@ const bgMusic = new Noise({
 })
 ``````
 ````js
-bgMusic.onLoadedmetadata(() => {
+bgMusic.onLoadedmetadata((data) => {
   console.log("Audio ready")
+  console.log(data.title)
+  console.log(data.currentTime)
 })
 
 bgMusic.play()
