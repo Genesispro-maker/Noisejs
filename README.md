@@ -132,7 +132,3 @@ bgMusic.play();
 - [ ] Expand audio control features
 - [ ] Improve event handling
 - [ ] Build a full audio component library
-
-## License
-
-MIT — see [LICENSE](LICENSE) for details.
