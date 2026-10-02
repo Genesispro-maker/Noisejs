@@ -108,6 +108,20 @@ noise.onLoadedMetadata((data) => {
 });
 ```
 
+### `src`
+
+Allows you to declare or update the audio source dynamically at any time after initialization, without needing to recreate the player instance. 
+
+Assigning a new value automatically triggers the browser to load and buffer the new audio asset immediately.
+
+```typescript
+const noise = new Noise({
+  src: ""
+});
+noise.src = "rain.mp3"; 
+noise.src = "music.mp3"; 
+```
+
 ## Example
 
 ```js
@@ -131,7 +145,6 @@ bgMusic.play();
 - [ ] Publish to npm
 - [ ] Expand audio control features
 - [ ] Improve event handling
-- [ ] Build a full audio component library
 
 ## License
 
