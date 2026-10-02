@@ -14,9 +14,9 @@ export default class Noise {
     loop;
     audio;
     metaData = [];
-    constructor({ src, mute = false, volume = 1, pan = 0, loop = false }) {
+    constructor({ src = "", mute = false, volume = 1, pan = 0, loop = false }) {
         this.audioContext = new AudioContext();
-        this.audio = new Audio(src);
+        this.audio = new Audio();
         this.metaData = [];
         this.loop = this.audio.loop = loop;
         this.audio.muted = mute;
@@ -27,6 +27,16 @@ export default class Noise {
         this.panner.pan.value = pan;
         this.init();
         this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination);
+        this.src = src;
+    }
+    get src() {
+        return this.audio.src;
+    }
+    set src(value) {
+        this.audio.src = value;
+        if (value) {
+            this.audio.load();
+        }
     }
     init() {
         this.audio.addEventListener("loadedmetadata", () => {
@@ -44,7 +54,7 @@ export default class Noise {
             listner(metadata);
         });
     }
-    onLoadedmetadata(callback) {
+    onLoadedMetadata(callback) {
         if (typeof callback === "function") {
             return this.metaData.push(callback);
         }
@@ -56,6 +66,17 @@ export default class Noise {
     }
     pause() {
         this.audio.pause();
+    }
+    disconnect() {
+        this.Source.disconnect();
+        this.gainNode.disconnect();
+        this.panner.disconnect();
+        this.audio.src = "";
+        this.audio.pause();
+        this.audio.load();
+        if (this.audioContext.state === "suspended") {
+            this.audioContext.close();
+        }
     }
 }
 //# sourceMappingURL=audio.js.map

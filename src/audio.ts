@@ -33,33 +33,38 @@ export default class Noise{
     private audio: HTMLAudioElement
     private metaData: Array<(metadata: Metadata) => void> = []
 
-    constructor({src, mute = false, volume = 1, pan = 0, loop = false}: Partial<NoiseType>){
+    constructor({ src = "", mute = false, volume = 1, pan = 0, loop = false}: Partial<NoiseType>){
         this.audioContext = new AudioContext()
-
-        this.audio = new Audio(src)
-
+        this.audio = new Audio()
         this.metaData = []
-
         this.loop = this.audio.loop = loop
-
         this.audio.muted = mute
 
         this.Source = this.audioContext.createMediaElementSource(this.audio)
-
         this.gainNode = this.audioContext.createGain()
-
         this.panner = new StereoPannerNode(this.audioContext)
-
         this.gainNode.gain.value = volume
-
         this.panner.pan.value = pan
 
         this.init()
-
         
         this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination)
+
+        this.src = src;
     }
-    
+
+    public get src(): string {
+        return this.audio.src
+    }
+
+    public set src(value: string){
+        this.audio.src = value
+
+        if(value){
+            this.audio.load()
+        }
+    }
+
     private init(){
         this.audio.addEventListener("loadedmetadata", () => {
             const metadatas : Metadata = {
@@ -79,7 +84,7 @@ export default class Noise{
         })
     }
 
-    onLoadedMetadata(callback: (metadata: Metadata) => void): number | this{
+    onLoadedMetadata(callback: (metadata: Metadata) => void): number | this {
         if(typeof callback === "function"){
             return this.metaData.push(callback)
         }
@@ -99,5 +104,14 @@ export default class Noise{
     disconnect(){
         this.Source.disconnect()
         this.gainNode.disconnect()
+        this.panner.disconnect()
+
+        this.audio.src = ""
+        this.audio.pause()
+        this.audio.load()
+
+        if(this.audioContext.state === "suspended"){
+            this.audioContext.close()
+        }
     }
 }

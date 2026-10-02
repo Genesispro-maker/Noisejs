@@ -20,11 +20,14 @@ export default class Noise {
     private audio;
     private metaData;
     constructor({ src, mute, volume, pan, loop }: Partial<NoiseType>);
+    get src(): string;
+    set src(value: string);
     private init;
     private notifyEventListners;
-    onLoadedmetadata(callback: (metadata: Metadata) => void): number | this;
+    onLoadedMetadata(callback: (metadata: Metadata) => void): number | this;
     play(): Promise<void>;
     pause(): void;
+    disconnect(): void;
 }
 export {};
 //# sourceMappingURL=audio.d.ts.map
