@@ -47,7 +47,6 @@ export default class Noise{
         this.panner.pan.value = pan
 
         this.init()
-        
         this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination)
 
         this.src = src;

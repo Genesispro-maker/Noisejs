@@ -145,7 +145,3 @@ bgMusic.play();
 - [ ] Publish to npm
 - [ ] Expand audio control features
 - [ ] Improve event handling
-
-## License
-
-MIT — see [LICENSE](LICENSE) for details.
