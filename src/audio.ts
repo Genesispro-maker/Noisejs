@@ -4,24 +4,21 @@ type NoiseType = {
     pan: number,
     loop: boolean,
     mute: boolean
+    autoplay: boolean
 }
 
 interface Metadata {
     title: string | undefined,
-    duration: string | undefined,
+    duration: string,
     fileExt: string | undefined,
-    currentTime: string | undefined
+    currentTime: string
 }
 
-function formatTime(time: number) {
-  if (isNaN(time)) return;
+function format(time: number){
+     const minutes = Math.floor(time / 60);
+     const seconds = Math.floor(time % 60);
 
-  const abs = Math.abs(time);
-
-  const min = Math.floor(abs / 60);
-  const sec = Math.floor(abs % 60);
-
-  return `${min}:${sec}`
+    return `${String(minutes).padStart(2, "0")}:${(String(seconds).padStart(2, "0"))}`
 }
 
 export default class Noise{
@@ -29,15 +26,13 @@ export default class Noise{
     private gainNode : GainNode
     private panner : StereoPannerNode
     private Source : MediaElementAudioSourceNode
-    private loop : boolean
     private audio: HTMLAudioElement
     private metaData: Array<(metadata: Metadata) => void> = []
 
-    constructor({ src = "", mute = false, volume = 1, pan = 0, loop = false}: Partial<NoiseType>){
+    constructor({ src = "", autoplay = false, mute = false, volume = 1, pan = 0, loop = false}: Partial<NoiseType>){
         this.audioContext = new AudioContext()
         this.audio = new Audio()
         this.metaData = []
-        this.loop = this.audio.loop = loop
         this.audio.muted = mute
 
         this.Source = this.audioContext.createMediaElementSource(this.audio)
@@ -50,6 +45,24 @@ export default class Noise{
         this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination)
 
         this.src = src;
+        this.loop = loop
+        this.autoplay = autoplay
+    }
+
+    public get autoplay(): boolean {
+        return this.audio.autoplay
+    }
+
+    public set autoplay(value: boolean){
+        this.audio.autoplay = value
+    }
+
+    public get loop(): boolean {
+        return this.audio.loop
+    }
+
+    public set loop(value: boolean){
+        this.audio.loop = value
     }
 
     public get src(): string {
@@ -67,8 +80,8 @@ export default class Noise{
     private init(){
         this.audio.addEventListener("loadedmetadata", () => {
             const metadatas : Metadata = {
-                duration: formatTime(this.audio.duration),
-                currentTime: formatTime(this.audio.currentTime),
+                duration: format(this.audio.duration),
+                currentTime: format(this.audio.currentTime),
                 title: this.audio.src.split("/").pop(),
                 fileExt: this.audio.src.split(".").pop(),
             }
@@ -87,6 +100,23 @@ export default class Noise{
         if(typeof callback === "function"){
             return this.metaData.push(callback)
         }
+        return this
+    }
+
+    onTimeUpdate(callback: (metadata: Metadata) => void){
+        if(typeof callback === "function"){
+            this.audio.addEventListener("timeupdate", () => {
+                const metadata: Metadata = {
+                    duration: format(this.audio.duration),
+                    currentTime: format(this.audio.currentTime),
+                    title: this.audio.src.split('/').pop(),
+                    fileExt: this.audio.src.split(".").pop(),
+                }
+
+                callback(metadata)
+            })
+        }
+
         return this
     }
 

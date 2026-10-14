@@ -1,24 +1,19 @@
-function formatTime(time) {
-    if (isNaN(time))
-        return;
-    const abs = Math.abs(time);
-    const min = Math.floor(abs / 60);
-    const sec = Math.floor(abs % 60);
-    return `${min}:${sec}`;
+function format(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${String(minutes).padStart(2, "0")}:${(String(seconds).padStart(2, "0"))}`;
 }
 export default class Noise {
     audioContext;
     gainNode;
     panner;
     Source;
-    loop;
     audio;
     metaData = [];
-    constructor({ src = "", mute = false, volume = 1, pan = 0, loop = false }) {
+    constructor({ src = "", autoplay = false, mute = false, volume = 1, pan = 0, loop = false }) {
         this.audioContext = new AudioContext();
         this.audio = new Audio();
         this.metaData = [];
-        this.loop = this.audio.loop = loop;
         this.audio.muted = mute;
         this.Source = this.audioContext.createMediaElementSource(this.audio);
         this.gainNode = this.audioContext.createGain();
@@ -28,6 +23,20 @@ export default class Noise {
         this.init();
         this.Source.connect(this.panner).connect(this.gainNode).connect(this.audioContext.destination);
         this.src = src;
+        this.loop = loop;
+        this.autoplay = autoplay;
+    }
+    get autoplay() {
+        return this.audio.autoplay;
+    }
+    set autoplay(value) {
+        this.audio.autoplay = value;
+    }
+    get loop() {
+        return this.audio.loop;
+    }
+    set loop(value) {
+        this.audio.loop = value;
     }
     get src() {
         return this.audio.src;
@@ -41,8 +50,8 @@ export default class Noise {
     init() {
         this.audio.addEventListener("loadedmetadata", () => {
             const metadatas = {
-                duration: formatTime(this.audio.duration),
-                currentTime: formatTime(this.audio.currentTime),
+                duration: format(this.audio.duration),
+                currentTime: format(this.audio.currentTime),
                 title: this.audio.src.split("/").pop(),
                 fileExt: this.audio.src.split(".").pop(),
             };
@@ -57,6 +66,20 @@ export default class Noise {
     onLoadedMetadata(callback) {
         if (typeof callback === "function") {
             return this.metaData.push(callback);
+        }
+        return this;
+    }
+    onTimeUpdate(callback) {
+        if (typeof callback === "function") {
+            this.audio.addEventListener("timeupdate", () => {
+                const metadata = {
+                    duration: format(this.audio.duration),
+                    currentTime: format(this.audio.currentTime),
+                    title: this.audio.src.split('/').pop(),
+                    fileExt: this.audio.src.split(".").pop(),
+                };
+                callback(metadata);
+            });
         }
         return this;
     }

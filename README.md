@@ -108,6 +108,16 @@ noise.onLoadedMetadata((data) => {
 });
 ```
 
+### `onTimeUpdate(callback)`
+
+Fires this when show updates as audio updates Time
+
+```js
+noise.onTimeUpdate((data) => {
+  console.log(data.CurrentTime)
+});
+```
+
 ### `src`
 
 Allows you to declare or update the audio source dynamically at any time after initialization, without needing to recreate the player instance. 
