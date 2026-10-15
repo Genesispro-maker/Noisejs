@@ -11,6 +11,7 @@ interface Metadata {
     duration: string;
     fileExt: string | undefined;
     currentTime: string;
+    progress?: number;
 }
 export default class Noise {
     private audioContext;
@@ -30,6 +31,7 @@ export default class Noise {
     private notifyEventListners;
     onLoadedMetadata(callback: (metadata: Metadata) => void): number | this;
     onTimeUpdate(callback: (metadata: Metadata) => void): this;
+    onEnd(callback: (metadata: Pick<Metadata, 'currentTime' | "progress">) => void): this;
     play(): Promise<void>;
     pause(): void;
     disconnect(): void;

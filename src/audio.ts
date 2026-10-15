@@ -12,6 +12,7 @@ interface Metadata {
     duration: string,
     fileExt: string | undefined,
     currentTime: string
+    progress?: number
 }
 
 function format(time: number){
@@ -96,7 +97,7 @@ export default class Noise{
         })
     }
 
-    onLoadedMetadata(callback: (metadata: Metadata) => void): number | this {
+    onLoadedMetadata(callback: (metadata: Metadata) => void): this | number {
         if(typeof callback === "function"){
             return this.metaData.push(callback)
         }
@@ -106,11 +107,14 @@ export default class Noise{
     onTimeUpdate(callback: (metadata: Metadata) => void){
         if(typeof callback === "function"){
             this.audio.addEventListener("timeupdate", () => {
+
+                const timeElapsed = this.audio.duration > 0 ? (this.audio.currentTime / this.audio.duration) * 100 : 0
                 const metadata: Metadata = {
                     duration: format(this.audio.duration),
                     currentTime: format(this.audio.currentTime),
                     title: this.audio.src.split('/').pop(),
                     fileExt: this.audio.src.split(".").pop(),
+                    progress: timeElapsed
                 }
 
                 callback(metadata)
@@ -118,6 +122,21 @@ export default class Noise{
         }
 
         return this
+    }
+
+    onEnd(callback: (metadata: Pick<Metadata, 'currentTime' | "progress">) => void){
+        if(typeof callback === "function"){
+            this.audio.addEventListener("ended", () => {
+            const data: Pick<Metadata, "currentTime" | "progress"> = {
+                currentTime: "0:00",
+                progress: 0
+            }
+            callback(data)
+        })
+    }
+
+    return this
+
     }
 
     async play(){

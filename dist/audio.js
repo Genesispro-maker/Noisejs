@@ -72,13 +72,27 @@ export default class Noise {
     onTimeUpdate(callback) {
         if (typeof callback === "function") {
             this.audio.addEventListener("timeupdate", () => {
+                const timeElapsed = this.audio.duration > 0 ? (this.audio.currentTime / this.audio.duration) * 100 : 0;
                 const metadata = {
                     duration: format(this.audio.duration),
                     currentTime: format(this.audio.currentTime),
                     title: this.audio.src.split('/').pop(),
                     fileExt: this.audio.src.split(".").pop(),
+                    progress: timeElapsed
                 };
                 callback(metadata);
+            });
+        }
+        return this;
+    }
+    onEnd(callback) {
+        if (typeof callback === "function") {
+            this.audio.addEventListener("ended", () => {
+                const data = {
+                    currentTime: "0:00",
+                    progress: 0
+                };
+                callback(data);
             });
         }
         return this;
